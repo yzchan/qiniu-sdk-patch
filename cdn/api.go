@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/qiniu/go-sdk/v7/conf"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -109,7 +110,7 @@ func postRequest(mac *auth.Credentials, path string, body interface{}) (resData 
 	}
 
 	req.Header.Add("Authorization", "QBox "+accessToken)
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Content-Type", conf.CONTENT_TYPE_JSON)
 
 	resp, respErr := http.DefaultClient.Do(req)
 	if respErr != nil {

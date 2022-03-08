@@ -63,7 +63,7 @@ func TestGetDynFluxData(t *testing.T) {
 			ret, err := cdnManager.GetDynFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
 			t.Log(ret.Data)
 			if err != nil || ret.Code != tc.wantCode {
-				t.Errorf("GetFlux() error = %v, %v", err, ret.Error)
+				t.Errorf("GetDynFluxData() error = %v, %v", err, ret.Error)
 				return
 			}
 		})
@@ -101,7 +101,7 @@ func TestGetDynReqCount(t *testing.T) {
 			ret, err := cdnManager.GetDynReqCount(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
 			t.Log(ret.Data)
 			if err != nil || ret.Code != tc.wantCode {
-				t.Errorf("GetFlux() error = %v, %v", err, ret.Error)
+				t.Errorf("GetDynReqCount() error = %v, %v", err, ret.Error)
 				return
 			}
 		})
