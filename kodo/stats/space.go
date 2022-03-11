@@ -3,6 +3,7 @@ package stats
 import (
 	"encoding/json"
 	"errors"
+
 	"github.com/google/go-querystring/query"
 	"github.com/yzchan/qiniu-sdk-patch/kodo"
 	"github.com/yzchan/qiniu-sdk-patch/lib"
@@ -54,8 +55,8 @@ func (m *StatsManager) CountArchive(beginDate, endDate, granularity, bucket, reg
 }
 
 func (m *StatsManager) SpaceRequest(path string, options SpaceReq) (ret SpaceResp, err error) {
-	options.Begin = lib.TransDate(options.Begin)
-	options.End = lib.TransDate(options.End)
+	options.Begin = lib.FromDate(options.Begin)
+	options.End = lib.ToDate(options.End)
 	v, _ := query.Values(options)
 	var resp []byte
 	if resp, err = sendGetRequest(m.mac, path, v.Encode()); err != nil {

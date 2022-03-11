@@ -17,10 +17,11 @@ import (
 type CdnManager struct {
 	mac *auth.Credentials
 	*cdn.CdnManager
+	Debug bool
 }
 
 func NewCdnManager(mac *qbox.Mac) *CdnManager {
-	return &CdnManager{mac, cdn.NewCdnManager(mac)}
+	return &CdnManager{mac, cdn.NewCdnManager(mac), false}
 }
 
 type TrafficReq struct {

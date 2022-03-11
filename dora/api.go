@@ -2,7 +2,10 @@ package dora
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/qiniu/x/log"
+	"github.com/yzchan/qiniu-sdk-patch/lib"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -11,13 +14,17 @@ import (
 	"github.com/qiniu/go-sdk/v7/auth"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/conf"
-	"github.com/yzchan/qiniu-sdk-patch/lib"
 )
 
 const Host = "stats-dora.qiniuapi.com"
 
+func init() {
+	log.SetFlags(log.Ldate | log.Ltime | log.Llevel)
+}
+
 type DoraManager struct {
-	mac *auth.Credentials
+	mac   *auth.Credentials
+	Debug bool
 }
 
 func NewDoraManager(mac *qbox.Mac) *DoraManager {
@@ -37,17 +44,20 @@ func (m *DoraManager) GetCount(item string, beginDate string, endDate string) (d
 		resp    []CountResp
 	)
 
-	query := fmt.Sprintf("start=%s&end=%s", lib.TransDate(beginDate), lib.TransDate(endDate))
-	content, err = sendRequest(m.mac, item, query)
+	query := fmt.Sprintf("start=%s&end=%s", lib.FromDate(beginDate), lib.ToDate(endDate))
+	if content, err = m.sendRequest(item, query); err != nil {
+		return
+	}
 
 	if err = json.Unmarshal(content, &resp); err != nil {
+		err = errors.New(err.Error() + ". response body:" + string(content))
 		return
 	}
 
 	return resp, nil
 }
 
-func sendRequest(mac *qbox.Mac, item string, query string) (resp []byte, err error) {
+func (m *DoraManager) sendRequest(item string, query string) (resp []byte, err error) {
 	u := url.URL{
 		Scheme:   "https",
 		Host:     Host,
@@ -58,16 +68,19 @@ func sendRequest(mac *qbox.Mac, item string, query string) (resp []byte, err err
 	client := &http.Client{}
 	var request *http.Request
 
+	if m.Debug {
+		log.Infof(" request: GET %s", u.String())
+	}
 	if request, err = http.NewRequest("GET", u.String(), nil); err != nil {
 		return
 	}
 	request.Header.Set("Host", Host)
 	request.Header.Set("Content-Type", conf.CONTENT_TYPE_FORM)
-	if _, err = mac.SignRequest(request); err != nil {
+	if _, err = m.mac.SignRequest(request); err != nil {
 		return
 	}
 
-	if err = mac.AddToken(auth.TokenQiniu, request); err != nil {
+	if err = m.mac.AddToken(auth.TokenQiniu, request); err != nil {
 		return
 	}
 
@@ -81,5 +94,8 @@ func sendRequest(mac *qbox.Mac, item string, query string) (resp []byte, err err
 		return
 	}
 
+	if m.Debug {
+		log.Infof(" response: %s", string(resp))
+	}
 	return
 }

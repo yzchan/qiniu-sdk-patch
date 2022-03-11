@@ -11,8 +11,6 @@ import (
 	"github.com/qiniu/go-sdk/v7/storage"
 )
 
-const layout = "2006-01-02"
-
 type StatsManager struct {
 	mac *auth.Credentials
 }

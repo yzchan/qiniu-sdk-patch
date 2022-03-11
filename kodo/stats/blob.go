@@ -2,9 +2,10 @@ package stats
 
 import (
 	"encoding/json"
-	"github.com/yzchan/qiniu-sdk-patch/lib"
 	"net/url"
 	"time"
+
+	"github.com/yzchan/qiniu-sdk-patch/lib"
 )
 
 type BlobResp struct {
@@ -20,8 +21,8 @@ type BlobResp struct {
 func (m *StatsManager) BlobIO(beginDate, endDate, granularity, _select, bucket, domain, region, ftype string, src []string) (ret []BlobResp, err error) {
 	var uri url.URL
 	query := uri.Query()
-	query.Add("begin", lib.TransDate(beginDate))
-	query.Add("end", lib.TransDate(endDate))
+	query.Add("begin", lib.FromDate(beginDate))
+	query.Add("end", lib.ToDate(endDate))
 	query.Add("g", granularity)  // 时间聚合粒度(5min hour day month)
 	query.Add("select", _select) // 值字段    flow 流量 (Byte)       hits GET 请求次数
 	// 下面是非必填
@@ -57,10 +58,10 @@ func (m *StatsManager) BlobIO(beginDate, endDate, granularity, _select, bucket, 
 func (m *StatsManager) BlobTransfer(beginDate, endDate, isOversea, taskId string) (ret []BlobResp, err error) {
 	var uri url.URL
 	query := uri.Query()
-	query.Add("begin", lib.TransDate(beginDate))
-	query.Add("end", lib.TransDate(endDate))
+	query.Add("begin", lib.FromDate(beginDate))
+	query.Add("end", lib.ToDate(endDate))
 	query.Add("select", "size")
-	query.Add("g", "day") // 时间聚合粒度( day month)
+	query.Add("g", "day") // 时间聚合粒度(day month)
 	// 以下为非必选项
 	if isOversea != "" {
 		query.Add("$is_oversea", isOversea)
@@ -83,8 +84,8 @@ func (m *StatsManager) BlobTransfer(beginDate, endDate, isOversea, taskId string
 func (m *StatsManager) RsChType(beginDate, endDate, granularity, bucket, region string) (ret []BlobResp, err error) {
 	var uri url.URL
 	query := uri.Query()
-	query.Add("begin", lib.TransDate(beginDate))
-	query.Add("end", lib.TransDate(endDate))
+	query.Add("begin", lib.FromDate(beginDate))
+	query.Add("end", lib.ToDate(endDate))
 	query.Add("select", "hits") // 值固定为hits
 	query.Add("g", granularity) // 时间聚合粒度(5min hour day month)
 	if bucket != "" {
@@ -107,8 +108,8 @@ func (m *StatsManager) RsChType(beginDate, endDate, granularity, bucket, region 
 func (m *StatsManager) RsPut(beginDate, endDate, granularity, bucket, region string, ftype string) (ret []BlobResp, err error) {
 	var uri url.URL
 	query := uri.Query()
-	query.Add("begin", lib.TransDate(beginDate))
-	query.Add("end", lib.TransDate(endDate))
+	query.Add("begin", lib.FromDate(beginDate))
+	query.Add("end", lib.ToDate(endDate))
 	query.Add("select", "hits")
 	query.Add("g", granularity) // 时间聚合粒度(5min hour day month)
 	if bucket != "" {
