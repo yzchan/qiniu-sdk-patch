@@ -48,7 +48,7 @@ func (m *CdnManager) GetDynFluxData(startDate, endDate, granularity string, doma
 		Type:        "dynflux",
 	}
 
-	resData, reqErr := postRequest(m.mac, "/v2/tune/flux", reqBody)
+	resData, reqErr := postRequest(m.mac, "/v2/dcdn/flux", reqBody)
 	if reqErr != nil {
 		err = reqErr
 		return
@@ -79,7 +79,7 @@ func (m *CdnManager) GetDynReqCount(startDate, endDate, granularity string, doma
 		Type:        "dynreqcount",
 	}
 
-	resData, reqErr := postRequest(m.mac, "/v2/tune/dynreqcount", reqBody)
+	resData, reqErr := postRequest(m.mac, "/v2/dcdn/dynreqcount", reqBody)
 	if reqErr != nil {
 		err = reqErr
 		return
