@@ -1,4 +1,4 @@
-package cdn
+package dcdn
 
 import (
 	"os"
@@ -22,14 +22,14 @@ var (
 )
 
 var mac *auth.Credentials
-var cdnManager *CdnManager
+var dcdnManager *DcdnManager
 
 func init() {
 	if ak == "" || sk == "" {
 		panic("ak/sk should not be empty")
 	}
 	mac = auth.New(ak, sk)
-	cdnManager = NewCdnManager(mac)
+	dcdnManager = NewDcdnManager(mac)
 }
 
 // TestGetDynFluxData
@@ -47,7 +47,7 @@ func TestGetDynFluxData(t *testing.T) {
 		wantCode int
 	}{
 		{
-			name: "CdnManager_TestGetDynFluxData",
+			name: "DcdnManager_TestGetDynFluxData",
 			args: args{
 				startDate,
 				endDate,
@@ -60,10 +60,48 @@ func TestGetDynFluxData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			ret, err := cdnManager.GetDynFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
+			ret, err := dcdnManager.GetDynFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
 			t.Log(ret.Data)
 			if err != nil || ret.Code != tc.wantCode {
 				t.Errorf("GetDynFluxData() error = %v, %v", err, ret.Error)
+				return
+			}
+		})
+	}
+}
+
+// TestGetStaticFluxData
+func TestGetStaticFluxData(t *testing.T) {
+	type args struct {
+		startDate   string
+		endDate     string
+		granularity string
+		domainList  []string
+	}
+
+	testCases := []struct {
+		name     string
+		args     args
+		wantCode int
+	}{
+		{
+			name: "DcdnManager_TestGetStaticFluxData",
+			args: args{
+				startDate,
+				endDate,
+				"day",
+				[]string{domain},
+			},
+			wantCode: 200,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			ret, err := dcdnManager.GetStaticFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
+			t.Log(ret.Data)
+			if err != nil || ret.Code != tc.wantCode {
+				t.Errorf("GetStaticFluxData() error = %v, %v", err, ret.Error)
 				return
 			}
 		})
@@ -85,7 +123,7 @@ func TestGetDynReqCount(t *testing.T) {
 		wantCode int
 	}{
 		{
-			name: "CdnManager_TestGetDynReqCount",
+			name: "DcdnManager_TestGetDynReqCount",
 			args: args{
 				startDate,
 				endDate,
@@ -98,7 +136,7 @@ func TestGetDynReqCount(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			ret, err := cdnManager.GetDynReqCount(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
+			ret, err := dcdnManager.GetDynReqCount(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
 			t.Log(ret.Data)
 			if err != nil || ret.Code != tc.wantCode {
 				t.Errorf("GetDynReqCount() error = %v, %v", err, ret.Error)

@@ -4,10 +4,13 @@
 
 ## 补充的方法列表
 
-### cdn
+### dcdn 全站加速
 
-- [动态加速计费流量](https://developer.qiniu.com/fusion/1230/traffic-bandwidth#4)
-- [动态加速之动态请求数](https://developer.qiniu.com/fusion/1230/traffic-bandwidth#5)
+[动态加速升级为全站加速](https://developer.qiniu.com/dcdn/10489/dynamic-acceleration-upgraded-to-total-station) [官方文档](https://developer.qiniu.com/dcdn/10753/dcdn-traffic-bandwidth) 尚未更新（2022-04-11）
+
+- 全站加速静态流量
+- 全站加速动态流量
+- 全站加速动态请求次数
 
 ### 对象存储 数据统计接口
 
