@@ -85,7 +85,7 @@ func TestGetStaticFluxData(t *testing.T) {
 		wantCode int
 	}{
 		{
-			name: "DcdnManager_TestGetStaticFluxData",
+			name: "DcdnManager_TestGetFluxData",
 			args: args{
 				startDate,
 				endDate,
@@ -98,10 +98,10 @@ func TestGetStaticFluxData(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			ret, err := dcdnManager.GetStaticFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
+			ret, err := dcdnManager.GetFluxData(tc.args.startDate, tc.args.endDate, tc.args.granularity, tc.args.domainList)
 			t.Log(ret.Data)
 			if err != nil || ret.Code != tc.wantCode {
-				t.Errorf("GetStaticFluxData() error = %v, %v", err, ret.Error)
+				t.Errorf("GetFluxData() error = %v, %v", err, ret.Error)
 				return
 			}
 		})

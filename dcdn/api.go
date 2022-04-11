@@ -48,12 +48,12 @@ type TrafficData struct {
 	DomainOversea []int `json:"oversea"`
 }
 
-// GetStaticFluxData 纯静态CDN
+// GetFluxData 纯静态CDN
 //	StartDate	string		必须	开始日期，例如：2016-07-01
 //	EndDate		string		必须	结束日期，例如：2016-07-03
 //	Granularity	string		必须	粒度，取值：5min ／ hour ／day
 //	Domains		[]string	必须	域名列表
-func (m *DcdnManager) GetStaticFluxData(startDate, endDate, granularity string, domainList []string) (fluxData TrafficResp, err error) {
+func (m *DcdnManager) GetFluxData(startDate, endDate, granularity string, domainList []string) (fluxData TrafficResp, err error) {
 	return m.getData("/v2/dcdn/flux", "flux", startDate, endDate, granularity, domainList)
 }
 
