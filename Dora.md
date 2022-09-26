@@ -200,9 +200,7 @@ Authorization: Qiniu <MacToken>
 | Versa 智能填充服务                     | mkr-inpainting               |
 | Versa 实例分割服务                     | mkr-seg-ins                  |
 |                                  |                              |
-| 身份证识别 OCR                        | ocr-idcard                   |
 | 光线活体检测                           | face-flashlive               |
-| 人脸检测                             | face-detect                  |
 | 防翻拍活体检测                          | face-piclive                 |
 | 身份证二要素                           | idcard-auth                  |
 | 动作活体检测                           | face-actlive                 |

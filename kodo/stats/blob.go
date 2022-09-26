@@ -18,7 +18,7 @@ type BlobResp struct {
 }
 
 // BlobIO https://developer.qiniu.com/kodo/3820/blob-io
-func (m *StatsManager) BlobIO(beginDate, endDate, granularity, _select, bucket, domain, region, ftype string, src []string) (ret []BlobResp, err error) {
+func (m *StatsManager) BlobIO(beginDate, endDate, granularity, _select, bucket, domain, region, ftype string, metric string) (ret []BlobResp, err error) {
 	var uri url.URL
 	query := uri.Query()
 	query.Add("begin", lib.FromDate(beginDate))
@@ -38,10 +38,8 @@ func (m *StatsManager) BlobIO(beginDate, endDate, granularity, _select, bucket, 
 	if domain != "" {
 		query.Add("$domain", domain)
 	}
-	if src != nil && len(src) > 0 {
-		for _, item := range src {
-			query.Add("$src", item)
-		}
+	if metric != "" {
+		query.Add("$metric", metric)
 	}
 
 	var resp []byte
